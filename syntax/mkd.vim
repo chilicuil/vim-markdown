@@ -42,7 +42,7 @@ syn region htmlBold     start=/\\\@<!\(^\|\A\)\@=_\@<!___\@!/         end=/\\\@<
 syn region htmlItalic   start=/\\\@<!\(^\|\A\)\@=_\@<!__\@!/          end=/\\\@<!_\@<!__\@!\($\|\A\)\@=/        contains=htmlBold,@Spell
 
 " [link](URL) | [link][id] | [link][]
-syn region mkdLink matchgroup=mkdDelimiter      start="\!\?\[" end="\]\ze\s*[[(]" contains=@Spell nextgroup=mkdURL,mkdID skipwhite
+syn region mkdLink matchgroup=mkdDelimiter      start="[^\\]\!\?\[" end="\]\ze\s*[[(]" contains=@Spell nextgroup=mkdURL,mkdID skipwhite
 syn region mkdID matchgroup=mkdDelimiter        start="\["    end="\]" contained
 syn region mkdURL matchgroup=mkdDelimiter       start="("     end=")"  contained
 " mkd  inline links:           protocol   optional  user:pass@       sub/domain                 .com, .co.uk, etc      optional port   path/querystring/hash fragment
@@ -70,6 +70,9 @@ syn match  mkdCode      /^\s*\n\(\(\s\{4,}[^ ]\|\t\+[^\t]\).*\n\)\+/
 syn match  mkdLineBreak /  \+$/
 syn region mkdCode      start=/\\\@<!`/                   end=/\\\@<!`/
 syn region mkdCode      start=/\s*``[^`]*/          end=/[^`]*``\s*/
+syn region mkdCode      start=/\s*```[^`]*/          end=/[^`]*```\s*/
+syn region mkdCode      start=/^\~\~*[^~]*/          end=/[^~]*\~\~*$/
+syn region mkdCode start=/^`\{3,3}\s*\w*\s*$/  end=/^`\{3,3}\s*$/
 syn region mkdBlockquote start=/^\s*>/              end=/$/                 contains=mkdLineBreak,mkdLineContinue,@Spell
 syn region mkdCode      start="<pre[^>]*>"         end="</pre>"
 syn region mkdCode      start="<code[^>]*>"        end="</code>"
@@ -81,9 +84,8 @@ syn region htmlH3       start="^\s*###"                 end="\($\|#\+\)" contain
 syn region htmlH4       start="^\s*####"                end="\($\|#\+\)" contains=@Spell
 syn region htmlH5       start="^\s*#####"               end="\($\|#\+\)" contains=@Spell
 syn region htmlH6       start="^\s*######"              end="\($\|#\+\)" contains=@Spell
-syn match  htmlH1       /^.\+\n=\+$/ contains=@Spell
-syn match  htmlH2       /^.\+\n-\+$/ contains=@Spell
-
+syn match htmlH1        /^(.+\n)+=+$/ contains=@Spell
+syn match htmlH2        /^(.+\n)+-+$/ contains=@Spell
 
 
 " fold region for headings
